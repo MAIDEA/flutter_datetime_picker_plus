@@ -61,6 +61,7 @@ class DatePicker {
     BuildContext context, {
     bool showTitleActions = true,
     bool showSecondsColumn = true,
+    bool hourPickerOnly = false,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
@@ -83,6 +84,7 @@ class DatePicker {
           currentTime: currentTime,
           locale: locale,
           showSecondsColumn: showSecondsColumn,
+          hourPickerOnly: hourPickerOnly,
         ),
       ),
     );
@@ -94,6 +96,7 @@ class DatePicker {
   static Future<DateTime?> showTime12hPicker(
     BuildContext context, {
     bool showTitleActions = true,
+    bool hourPickerOnly = false,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
@@ -115,6 +118,7 @@ class DatePicker {
         pickerModel: Time12hPickerModel(
           currentTime: currentTime,
           locale: locale,
+          hourPickerOnly: hourPickerOnly,
         ),
       ),
     );
