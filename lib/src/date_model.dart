@@ -400,6 +400,9 @@ class TimePickerModel extends CommonPickerModel {
   @override
   String? leftStringAtIndex(int index) {
     if (index >= 0 && index < 24) {
+      if (hourPickerOnly) {
+        return "${digits(index, 2)}:00";
+      }
       return digits(index, 2);
     } else {
       return null;
