@@ -442,8 +442,10 @@ class TimePickerModel extends CommonPickerModel {
 
   @override
   List<int> layoutProportions() {
-    if (showSecondsColumn)
+    if (!hourPickerOnly && showSecondsColumn)
       return [1, 1, 1];
+    else if (hourPickerOnly)
+      return [1, 0, 0];
     else
       return [1, 1, 0];
   }
