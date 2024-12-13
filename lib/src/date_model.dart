@@ -377,17 +377,24 @@ class DatePickerModel extends CommonPickerModel {
 //a time picker model
 class TimePickerModel extends CommonPickerModel {
   bool showSecondsColumn;
+  bool hourPickerOnly;
 
   TimePickerModel(
       {DateTime? currentTime,
       LocaleType? locale,
-      this.showSecondsColumn = true})
+      this.showSecondsColumn = true,
+      this.hourPickerOnly = false})
       : super(locale: locale) {
     this.currentTime = currentTime ?? DateTime.now();
 
     _currentLeftIndex = this.currentTime.hour;
-    _currentMiddleIndex = this.currentTime.minute;
-    _currentRightIndex = this.currentTime.second;
+    _currentMiddleIndex = hourPickerOnly ? 0 : this.currentTime.minute;
+    _currentRightIndex = hourPickerOnly || !showSecondsColumn ? 0 : this.currentTime.second;
+  }
+
+  @override
+  int currentMiddleIndex() {
+    return hourPickerOnly ? 0 : _currentMiddleIndex;
   }
 
   @override
@@ -401,6 +408,9 @@ class TimePickerModel extends CommonPickerModel {
 
   @override
   String? middleStringAtIndex(int index) {
+    if (hourPickerOnly) {
+      return digits(0, 2);
+    }
     if (index >= 0 && index < 60) {
       return digits(index, 2);
     } else {
@@ -442,15 +452,16 @@ class TimePickerModel extends CommonPickerModel {
   DateTime finalTime() {
     return currentTime.isUtc
         ? DateTime.utc(currentTime.year, currentTime.month, currentTime.day,
-            _currentLeftIndex, _currentMiddleIndex, _currentRightIndex)
+            _currentLeftIndex, hourPickerOnly ? 0 : _currentMiddleIndex, hourPickerOnly || !showSecondsColumn ? 0 : _currentRightIndex)
         : DateTime(currentTime.year, currentTime.month, currentTime.day,
-            _currentLeftIndex, _currentMiddleIndex, _currentRightIndex);
+            _currentLeftIndex, hourPickerOnly ? 0 : _currentMiddleIndex, hourPickerOnly || !showSecondsColumn ? 0 : _currentRightIndex);
   }
 }
 
 //a time picker model
 class Time12hPickerModel extends CommonPickerModel {
-  Time12hPickerModel({DateTime? currentTime, LocaleType? locale})
+  bool hourPickerOnly;
+  Time12hPickerModel({DateTime? currentTime, LocaleType? locale, this.hourPickerOnly = false})
       : super(locale: locale) {
     this.currentTime = currentTime ?? DateTime.now();
 
@@ -504,7 +515,7 @@ class Time12hPickerModel extends CommonPickerModel {
 
   @override
   List<int> layoutProportions() {
-    return [1, 1, 1];
+      return [1, 1, 1];
   }
 
   @override
